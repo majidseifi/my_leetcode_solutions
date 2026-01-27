@@ -2,18 +2,18 @@
  * @param {integer} init
  * @return { increment: Function, decrement: Function, reset: Function }
  */
-var createCounter = function(num) {
-    const init = num;
+var createCounter = function(init) {
+    let result = init;
     return {
         increment: function() {
-            return ++num;
+            return ++result;
         },
         reset: function() {
-            num = init;
-            return num;
+            result = init;
+            return result;
         },
         decrement: function() {
-            return --num;
+            return --result;
         }
 
     }
