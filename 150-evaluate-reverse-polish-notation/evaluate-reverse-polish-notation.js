@@ -3,21 +3,24 @@
  * @return {number}
  */
 var evalRPN = function(tokens) {
-    while (tokens.length > 1) {
-        for (let i = 0; i < tokens.length; i++) {
-            if ('+-*/'.includes(tokens[i])) {
-                const a = parseInt(tokens[i - 2]);
-                const b = parseInt(tokens[i - 1]);
-                let result;
-                if (tokens[i] === '+') result = a + b;
-                else if (tokens[i] === '-') result = a - b;
-                else if (tokens[i] === '*') result = a * b;
-                else if (tokens[i] === '/') result = Math.trunc(a / b);
+    function operate(a, b, operator) {
+        if (operator == '+') return a + b;
+        else if (operator == '-') return a - b;
+        else if (operator == '*') return a * b;
+        return Math.trunc(a / b);
+    }
 
-                tokens.splice(i - 2, 3, result.toString());
-                break;
-            }
+    const stack = [];
+    for (const token of tokens) {
+        if (token.length === 1 && token.charCodeAt(0) < 48) {
+            const num2 = stack.pop();
+            const num1 = stack.pop();
+            const operator = token;
+            const resolvedAns = operate(num1, num2, operator);
+            stack.push(resolvedAns);
+        } else {
+            stack.push(parseInt(token, 10));
         }
     }
-    return parseInt(tokens[0]);
+    return stack.pop();
 };
